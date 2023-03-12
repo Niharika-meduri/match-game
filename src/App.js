@@ -248,7 +248,6 @@ const imagesList = [
   },
 ]
 
-const initialImageslist = imagesList
 
 const TabItem = props => {
   const {details, setActiveTabId} = props
@@ -332,21 +331,29 @@ class App extends Component {
 
   reset = () => {
     this.clearInterval()
-    this.setState(initialState)
+    this.setState({
+      timer: 60,
+      score: 0,
+    })
   }
 
-  shufflingImages = () => initialImageslist.sort(() => Math.random() - 0.5)
+  gettingRandomImage = () => {
+    const randomNum = Math.floor(Math.random() * imagesList.length)
+    return imagesList[randomNum]
+  }
 
   checkingImage = id => {
     const {questionImageId} = this.state
-    if (questionImageId === id) {
-      const shuffledImagesList = this.shufflingImages()
 
+    if (questionImageId === id) {
+      const randomListItem = this.gettingRandomImage()
       this.setState(prevState => ({
+        questionImageId: randomListItem.id,
+        image: randomListItem.imageUrl,
         score: prevState.score + 1,
-        image: shuffledImagesList[0].imageUrl,
-        questionImageId: shuffledImagesList[0].id,
       }))
+    } else {
+      this.setState({timer: 0})
     }
   }
 
@@ -361,30 +368,32 @@ class App extends Component {
       <div>
         {!condition ? (
           <div>
-            <ul className="header-list">
-              <li className="header">
-                <img
-                  src="https://assets.ccbp.in/frontend/react-js/match-game-website-logo.png"
-                  alt="website logo"
-                  className="logo"
-                />
-                <div className="score-timer-container">
-                  <p className="score-timer">
-                    score:<span className="numbers">{score}</span>
-                  </p>
-                  <div className="timer">
-                    <img
-                      src="https://assets.ccbp.in/frontend/react-js/match-game-timer-img.png"
-                      alt="timer"
-                      className="timer-logo"
-                    />
+            <nav>
+              <ul className="header-list">
+                <li className="header">
+                  <img
+                    src="https://assets.ccbp.in/frontend/react-js/match-game-website-logo.png"
+                    alt="website logo"
+                    className="logo"
+                  />
+                  <div className="score-timer-container">
                     <p className="score-timer">
-                      timer:<p className="numbers">{timer} sec</p>
+                      score:<span className="numbers">{score}</span>
                     </p>
+                    <div className="timer">
+                      <img
+                        src="https://assets.ccbp.in/frontend/react-js/match-game-timer-img.png"
+                        alt="timer"
+                        className="timer-logo"
+                      />
+                      <p className="score-timer">
+                        timer:<p className="numbers">{timer} sec</p>
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </li>
-            </ul>
+                </li>
+              </ul>
+            </nav>
             <div className="bg-container">
               <div className="quest-container">
                 <img src={image} alt="match" className="question-image" />
@@ -419,7 +428,7 @@ class App extends Component {
                 className="trophy"
               />
               <p className="score-timer">
-                <p className="score">Score : {score}</p>
+                <p className="score">YOUR SCORE : {score}</p>
               </p>
               <button
                 className="play-again-cont"
@@ -431,7 +440,7 @@ class App extends Component {
                   alt="reset"
                   className="reset-btn"
                 />
-                <p className="play-again">Play again</p>
+                <p className="play-again">PLAY AGAIN</p>
               </button>
             </div>
           </div>
