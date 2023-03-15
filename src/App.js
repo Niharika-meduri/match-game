@@ -366,58 +366,56 @@ class App extends Component {
 
     return (
       <div>
-        {!condition ? (
-          <div>
-            <nav>
-              <ul className="header-list">
-                <li className="header">
+        <nav>
+          <ul className="header-list">
+            <li className="header">
+              <img
+                src="https://assets.ccbp.in/frontend/react-js/match-game-website-logo.png"
+                alt="website logo"
+                className="logo"
+              />
+              <div className="score-timer-container">
+                <p className="score-timer">
+                  score:<span className="numbers">{score}</span>
+                </p>
+                <div className="timer">
                   <img
-                    src="https://assets.ccbp.in/frontend/react-js/match-game-website-logo.png"
-                    alt="website logo"
-                    className="logo"
+                    src="https://assets.ccbp.in/frontend/react-js/match-game-timer-img.png"
+                    alt="timer"
+                    className="timer-logo"
                   />
-                  <div className="score-timer-container">
-                    <p className="score-timer">
-                      score:<span className="numbers">{score}</span>
-                    </p>
-                    <div className="timer">
-                      <img
-                        src="https://assets.ccbp.in/frontend/react-js/match-game-timer-img.png"
-                        alt="timer"
-                        className="timer-logo"
-                      />
-                      <p className="score-timer">
-                        timer:<p className="numbers">{timer} sec</p>
-                      </p>
-                    </div>
-                  </div>
-                </li>
-              </ul>
-            </nav>
-            <div className="bg-container">
-              <div className="quest-container">
-                <img src={image} alt="match" className="question-image" />
+                  <p className="score-timer">
+                    timer:<p className="numbers">{timer} sec</p>
+                  </p>
+                </div>
               </div>
-              <ul className="tabs-container">
-                {tabsList.map(eachItem => (
-                  <TabItem
-                    key={eachItem.tabId}
-                    details={eachItem}
-                    setActiveTabId={this.setActiveTabId}
-                  />
-                ))}
-              </ul>
-              <ul className="images-container">
-                {filteredImages.map(eachImage => (
-                  <ImageItem
-                    key={eachImage.id}
-                    details={eachImage}
-                    activeTabId={activeTabId}
-                    checkingImage={this.checkingImage}
-                  />
-                ))}
-              </ul>
+            </li>
+          </ul>
+        </nav>
+        {!condition ? (
+          <div className="bg-container">
+            <div className="quest-container">
+              <img src={image} alt="match" className="question-image" />
             </div>
+            <ul className="tabs-container">
+              {tabsList.map(eachItem => (
+                <TabItem
+                  key={eachItem.tabId}
+                  details={eachItem}
+                  setActiveTabId={this.setActiveTabId}
+                />
+              ))}
+            </ul>
+            <ul className="images-container">
+              {filteredImages.map(eachImage => (
+                <ImageItem
+                  key={eachImage.id}
+                  details={eachImage}
+                  activeTabId={activeTabId}
+                  checkingImage={this.checkingImage}
+                />
+              ))}
+            </ul>
           </div>
         ) : (
           <div className="bg-container">
