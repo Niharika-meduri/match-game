@@ -283,6 +283,37 @@ const ImageItem = props => {
   )
 }
 
+const WinOrLoseCard = props => {
+  const {score, OnClickPlayAgain} = props
+
+  const reset = () => {
+    OnClickPlayAgain()
+  }
+
+  return (
+    <div className="bg-container">
+      <div className="score-card">
+        <img
+          src="https://assets.ccbp.in/frontend/react-js/match-game-trophy.png"
+          alt="trophy"
+          className="trophy"
+        />
+        <p className="score-timer">
+          <p className="score">YOUR SCORE : {score}</p>
+        </p>
+        <button className="play-again-cont" type="button" onClick={reset}>
+          <img
+            src="https://assets.ccbp.in/frontend/react-js/match-game-play-again-img.png"
+            alt="reset"
+            className="reset-btn"
+          />
+          <p className="play-again">PLAY AGAIN</p>
+        </button>
+      </div>
+    </div>
+  )
+}
+
 const initialState = {
   activeTabId: tabsList[0].tabId,
   timer: 60,
@@ -321,20 +352,12 @@ class App extends Component {
     const {timer} = this.state
 
     if (timer === 0) {
-      this.clearInterval()
+      this.clearInterval(this.timerId)
     }
 
     this.setState(prevState => ({
       timer: prevState.timer - 1,
     }))
-  }
-
-  reset = () => {
-    this.clearInterval()
-    this.setState({
-      timer: 60,
-      score: 0,
-    })
   }
 
   gettingRandomImage = () => {
@@ -357,10 +380,49 @@ class App extends Component {
     }
   }
 
-  render() {
-    const {activeTabId, timer, score, image} = this.state
-
+  renderGame = () => {
+    const {activeTabId, image} = this.state
     const filteredImages = this.getFilteredImages()
+    return (
+      <div className="bg-container">
+        <div className="quest-container">
+          <img src={image} alt="match" className="question-image" />
+        </div>
+        <ul className="tabs-container">
+          {tabsList.map(eachItem => (
+            <TabItem
+              key={eachItem.tabId}
+              details={eachItem}
+              setActiveTabId={this.setActiveTabId}
+            />
+          ))}
+        </ul>
+        <ul className="images-container">
+          {filteredImages.map(eachImage => (
+            <ImageItem
+              key={eachImage.id}
+              details={eachImage}
+              activeTabId={activeTabId}
+              checkingImage={this.checkingImage}
+            />
+          ))}
+        </ul>
+      </div>
+    )
+  }
+
+  reset = () => {
+    this.setState({initialState})
+    console.log('reset')
+  }
+
+  renderScoreCard = () => {
+    const {score} = this.state
+    return <WinOrLoseCard score={score} OnClickPlayAgain={this.reset} />
+  }
+
+  render() {
+    const {timer, score} = this.state
 
     const condition = timer === 0
 
@@ -392,60 +454,11 @@ class App extends Component {
             </li>
           </ul>
         </nav>
-        {!condition ? (
-          <div className="bg-container">
-            <div className="quest-container">
-              <img src={image} alt="match" className="question-image" />
-            </div>
-            <ul className="tabs-container">
-              {tabsList.map(eachItem => (
-                <TabItem
-                  key={eachItem.tabId}
-                  details={eachItem}
-                  setActiveTabId={this.setActiveTabId}
-                />
-              ))}
-            </ul>
-            <ul className="images-container">
-              {filteredImages.map(eachImage => (
-                <ImageItem
-                  key={eachImage.id}
-                  details={eachImage}
-                  activeTabId={activeTabId}
-                  checkingImage={this.checkingImage}
-                />
-              ))}
-            </ul>
-          </div>
-        ) : (
-          <div className="bg-container">
-            <div className="score-card">
-              <img
-                src="https://assets.ccbp.in/frontend/react-js/match-game-trophy.png"
-                alt="trophy"
-                className="trophy"
-              />
-              <p className="score-timer">
-                <p className="score">YOUR SCORE : {score}</p>
-              </p>
-              <button
-                className="play-again-cont"
-                type="button"
-                onClick={this.reset}
-              >
-                <img
-                  src="https://assets.ccbp.in/frontend/react-js/match-game-play-again-img.png"
-                  alt="reset"
-                  className="reset-btn"
-                />
-                <p className="play-again">PLAY AGAIN</p>
-              </button>
-            </div>
-          </div>
-        )}
+        {!condition ? this.renderGame() : this.renderScoreCard()}
       </div>
     )
   }
 }
 
 export default App
+
