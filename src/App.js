@@ -424,7 +424,7 @@ class App extends Component {
   render() {
     const {timer, score} = this.state
 
-    const condition = timer === 0
+    const condition = timer === 0 
 
     return (
       <div>
