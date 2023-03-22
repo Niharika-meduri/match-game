@@ -352,12 +352,12 @@ class App extends Component {
     const {timer} = this.state
 
     if (timer === 0) {
-      this.clearInterval(this.timerId)
-    }
-
+      clearInterval(this.timerId)
+    }else{
     this.setState(prevState => ({
       timer: prevState.timer - 1,
     }))
+    }
   }
 
   gettingRandomImage = () => {
@@ -412,7 +412,8 @@ class App extends Component {
   }
 
   reset = () => {
-    this.setState({initialState})
+    this.setState(initialState)
+    this.componentDidMount()
     console.log('reset')
   }
 
